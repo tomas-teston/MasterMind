@@ -1,10 +1,9 @@
 package es.upm.miw.mastermind.controllers;
 
-import es.upm.miw.mastermind.models.Color;
-import es.upm.miw.mastermind.models.Coordinate;
+import es.upm.miw.mastermind.models.Combination;
 
 public interface PresenterController {
+	int killed();
 
-	Color getColor(Coordinate coordinate);
-
+	int injured();
 }

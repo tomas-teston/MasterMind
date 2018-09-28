@@ -1,52 +1,35 @@
 package es.upm.miw.mastermind.controllers.local;
 
 import es.upm.miw.mastermind.models.Game;
-import es.upm.miw.mastermind.utils.ClosedInterval;
+import es.upm.miw.mastermind.models.ModeGame;
+//import es.upm.miw.mastermind.utils.ClosedInterval;
 
 class LocalColocateControllerBuilder {
 
-	private LocalColocateController[][] colocateControllerArray;
+	private LocalColocateController[] colocateControllerArray;
 
 	private Game game;
 
 	LocalColocateControllerBuilder(Game game) {
 		this.game = game;
-		colocateControllerArray = new LocalColocateController[game.getNumPlayers()][2];
+		colocateControllerArray = new LocalColocateController[game.getNumMaxPlays()];
 	}
 
-	void build(int users) {
-		assert new ClosedInterval(0, game.getNumPlayers()).includes(users);
-		LocalCoordinateController[][] coordinateController = new LocalCoordinateController[2][2];
-		for (int i = 0; i < game.getNumPlayers(); i++) {
-			for (int j = 0; j < 2; j++) {
-				if (i < users) {
-					coordinateController[i][j] = new LocalUserCoordinateController(
-							game);
-				} else {
-					coordinateController[i][j] = new LocalRandomCoordinateController(
-							game);
-				}
+	void build(int numMaxPlays) {
+		LocalCombinationController[] combinationController = new LocalCombinationController[numMaxPlays];
+		for (int i = 0; i < numMaxPlays; i++) {
+			if (game.getModeGame() == ModeGame.ONE_PLAYER) {
+				combinationController[i] = new LocalUserCombinationController(game);
+			} else if (game.getModeGame() == ModeGame.DEMO) {
+				combinationController[i] = new LocalRandomCombinationController(game);
 			}
 		}
-		for (int i = 0; i < game.getNumPlayers(); i++) {
-			for (int j = 0; j < 2; j++) {
-				if (j == 0) {
-					colocateControllerArray[i][j] = new LocalPutController(game,
-							coordinateController[i][j]);
-				} else {
-					colocateControllerArray[i][j] = new LocalMoveController(game,
-							coordinateController[i][j]);
-				}
-			}
+		for (int i = 0; i < numMaxPlays; i++) {
+				this.colocateControllerArray[i] = new LocalPlayController(game, combinationController[i]);
 		}
 	}
 
 	LocalColocateController getColocateController() {
-		int player = game.take().ordinal();
-		if (!game.complete()) {
-			return colocateControllerArray[player][0];
-		} else {
-			return colocateControllerArray[player][1];
-		}
+		return colocateControllerArray[game.take()];
 	}
 }

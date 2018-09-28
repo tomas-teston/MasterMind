@@ -1,7 +1,6 @@
 package es.upm.miw.mastermind.views.console;
 
 import es.upm.miw.mastermind.controllers.PresenterController;
-import es.upm.miw.mastermind.models.Coordinate;
 import es.upm.miw.mastermind.utils.IO;
 
 class BoardView {
@@ -14,13 +13,9 @@ class BoardView {
 	}
 
 	void write() {
-		IO io = new IO();
-		for (int i = 0; i < Coordinate.DIMENSION; i++) {
-			for (int j = 0; j < Coordinate.DIMENSION; j++) {
-				new ColorView(controller.getColor(new Coordinate(i, j)))
-						.write(" ");
-			}
-			io.writeln();
-		}
+		IO io = new IO();;
+		io.writeln("Muertos: " + Integer.toString(controller.killed()) );
+		io.writeln("Heridos: " + Integer.toString(controller.injured()));
+		io.writeln();
 	}
 }

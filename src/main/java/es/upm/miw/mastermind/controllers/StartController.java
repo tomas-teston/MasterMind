@@ -1,8 +1,7 @@
 package es.upm.miw.mastermind.controllers;
 
-public interface StartController extends OperationController,
-		PresenterController {
+public interface StartController {
 
-	void start(int users);
+	void start(int typeGame);
 
 }

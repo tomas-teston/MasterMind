@@ -1,8 +1,9 @@
 package es.upm.miw.mastermind.controllers.local;
+import es.upm.miw.mastermind.controllers.Error;
 
-import es.upm.miw.mastermind.models.Color;
-import es.upm.miw.mastermind.models.Coordinate;
+import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
+import es.upm.miw.mastermind.models.ModeGame;
 import es.upm.miw.mastermind.models.State;
 
 public abstract class LocalController {
@@ -14,10 +15,6 @@ public abstract class LocalController {
 		this.game = game;
 	}
 
-	protected int numPlayers() {
-		return game.getNumPlayers();
-	}
-
 	protected State getState(){
 		return game.getState();
 	}
@@ -27,46 +24,48 @@ public abstract class LocalController {
 		game.setState(state);
 	}
 
-	public Color take() {
+	public void setSecretCombination(Combination secret) {
+		assert secret != null;
+		game.setSecret(secret);
+	}
+
+	public void setModeGame(ModeGame modegame) {
+		assert modegame != null;
+		game.setModeGame(modegame);
+	}
+
+	public int takeAttemp() {
 		return game.take();
 	}
 
-	public void put(Coordinate target) {
-		assert target != null;
-		game.put(target);
-		if (game.existTicTacToe()) {
+	public void play(Combination combination) {
+		assert combination != null;
+		game.calculateKilledAndInjured(combination);
+		game.upAttemp();
+		if (game.existMastermind() || game.spentAttempts()) {
 			game.setState(State.FINAL);
-		} else {
-			game.change();
 		}
 	}
 
-	public void remove(Coordinate origin) {
-		assert origin != null;
-		game.remove(origin);
+	public int killed() { return game.killed(); }
+
+	public int injured() { return game.injured(); }
+
+	public boolean existMasterMind() {
+		return game.existMastermind();
+	}
+
+	public boolean spentAttempts() { return game.spentAttempts(); }
+
+	public Error isCorrectCombinationSecret() {
+		return game.isCorrectCombination(game.getSecret());
+	}
+
+	public Error validateCombination(Combination combination){
+		return game.isCorrectCombination(combination);
 	}
 
 	public void clear() {
 		game.clear();
 	}
-
-	public boolean empty(Coordinate coordinate) {
-		assert coordinate != null;
-		return game.empty(coordinate);
-	}
-
-	public boolean full(Coordinate coordinate) {
-		assert coordinate != null;
-		return game.full(coordinate);
-	}
-
-	public boolean existTicTacToe() {
-		return game.existTicTacToe();
-	}
-
-	public Color getColor(Coordinate coordinate){
-		assert coordinate != null;
-		return game.getColor(coordinate);
-	}
-
 }

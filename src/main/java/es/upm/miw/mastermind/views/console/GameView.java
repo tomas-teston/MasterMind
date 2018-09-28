@@ -2,97 +2,51 @@ package es.upm.miw.mastermind.views.console;
 
 import es.upm.miw.mastermind.controllers.ColocateControllerVisitor;
 import es.upm.miw.mastermind.controllers.ColocateController;
-import es.upm.miw.mastermind.controllers.PutController;
-import es.upm.miw.mastermind.controllers.MoveController;
-import es.upm.miw.mastermind.controllers.Error;
+import es.upm.miw.mastermind.controllers.PlayController;
 import es.upm.miw.mastermind.models.Color;
-import es.upm.miw.mastermind.models.Coordinate;
+import es.upm.miw.mastermind.models.Combination;
+import es.upm.miw.mastermind.models.Game;
 import es.upm.miw.mastermind.utils.IO;
+import es.upm.miw.mastermind.controllers.Error;
 
 class GameView implements ColocateControllerVisitor {
 
 	private IO io = new IO();
 
-	private ColorView colorView;
-
-	private Coordinate origin;
+	private Game game;
 
 	public void interact(ColocateController colocateController) {
-		colorView = new ColorView(colocateController.take());
 		colocateController.accept(this);
 	}
 
 	@Override
-	public void visit(PutController putController) {
-		this.showTitle("Pone", putController.take());
-		PutTargetCoordinateView putCoordinateView = new PutTargetCoordinateView(
-				putController.getCoordinateController());
-		this.put(putController, putCoordinateView);
-		this.showGame(putController);
-	}
-
-	@Override
-	public void visit(MoveController moveController) {
-		this.showTitle("Mueve", moveController.take());
-		MoveOriginCoordinateView moveOriginCoordinateView = new MoveOriginCoordinateView(
-				moveController.getCoordinateController());
-		this.remove(moveController, moveOriginCoordinateView);
-		MoveTargetCoordinateView moveTargetCoordinateView = new MoveTargetCoordinateView(
-				moveController.getCoordinateController(), origin);
-		this.put(moveController, moveTargetCoordinateView);
-		this.showGame(moveController);
-	}
-
-	private void showTitle(String title, Color color) {
-		colorView.writeln(title + " el jugador ");
-	}
-
-	private void put(PutController putController,
-			ColocateCoordinateView colocateCoordinateView) {
-		Coordinate target;
-		Error error = null;
-		do {
-			target = colocateCoordinateView.getCoordinate();
-			error = putController.validateTarget(target);
-			if (error != null) {
-				io.writeln("" + error);
-			}
-		} while (error != null);
-		putController.put(target);
-	}
-
-	private void remove(MoveController moveController,
-			ColocateCoordinateView colocateCoordinateView) {
-		Error error = null;
-		do {
-			origin = colocateCoordinateView.getCoordinate();
-			error = moveController.validateOrigin(origin);
-			if (error != null) {
-				io.writeln("" + error);
-			}
-		} while (error != null);
-		moveController.remove(origin);
-	}
-
-	private void put(MoveController moveController,
-			ColocateCoordinateView colocateCoordinateView) {
-		Coordinate target;
-		Error error = null;
-		do {
-			target = colocateCoordinateView.getCoordinate();
-			error = moveController.validateTarget(origin, target);
-			if (error != null) {
-				io.writeln("" + error);
-			}
-		} while (error != null);
-		moveController.put(target);
+	public void visit(PlayController playController) {
+		CombinationView combinationView = new CombinationView("Intento " + (playController.takeAttemp() + 1), new Combination());
+		combinationView.read();
+		Error error = playController.validateCombination(combinationView.getCombination());
+		if (error != null) {
+			io.writeln("" + error);
+		} else {
+			playController.putCombination(combinationView.getCombination());
+			this.showGame(playController);
+		}
 	}
 
 	private void showGame(ColocateController colocateController) {
 		new BoardView(colocateController).write();
-		if (colocateController.existTicTacToe()) {
-			colorView.writeWinner();
+		if (colocateController.existMasterMind()) {
+			this.writeWinner();
+		} else if (colocateController.spentAttempts()) {
+			this.writeSpentAttempts();
 		}
+	}
+
+	private void writeWinner() {
+		io.writeln("Win!");
+	}
+
+	private void writeSpentAttempts() {
+		io.writeln("Turnos agotados!");
 	}
 
 }

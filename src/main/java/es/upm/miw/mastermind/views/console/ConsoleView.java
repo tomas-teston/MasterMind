@@ -1,14 +1,17 @@
 package es.upm.miw.mastermind.views.console;
 
 import es.upm.miw.mastermind.View;
-import es.upm.miw.mastermind.controllers.ColocateController;
+import es.upm.miw.mastermind.controllers.ConfigurationSecretController;
 import es.upm.miw.mastermind.controllers.ContinueController;
 import es.upm.miw.mastermind.controllers.OperationController;
+import es.upm.miw.mastermind.controllers.PlayController;
 import es.upm.miw.mastermind.controllers.StartController;
 
 public class ConsoleView implements View {
 
 	private StartView startView;
+
+	private ConfigurationSecretView configurationSecretView;
 
 	private GameView gameView;
 
@@ -16,6 +19,7 @@ public class ConsoleView implements View {
 
 	public ConsoleView(){
 		startView = new StartView();
+		configurationSecretView = new ConfigurationSecretView();
 		gameView = new GameView();
 		continueView = new ContinueView();
 	}
@@ -30,14 +34,18 @@ public class ConsoleView implements View {
 		startView.interact(startController);
 	}
 
-	@Override
-	public void visit(ColocateController colocateController) {
-		gameView.interact(colocateController);
+	@Override public void visit(ConfigurationSecretController configurationSecretController) {
+		configurationSecretView.interact(configurationSecretController);
+	}
+
+	@Override public void visit(PlayController playController) {
+		gameView.interact(playController);
 	}
 
 	@Override
 	public void visit(ContinueController continueController) {
 		continueView.interact(continueController);
 	}
+
 
 }

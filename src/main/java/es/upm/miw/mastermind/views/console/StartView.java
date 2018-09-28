@@ -6,8 +6,7 @@ import es.upm.miw.mastermind.utils.LimitedIntDialog;
 class StartView {
 
 	void interact(StartController startController){
-		int users = new LimitedIntDialog("Cuántos usuarios?", 0, 2).read();
-		startController.start(users);
-		new BoardView(startController).write();
+		int modeGame = new LimitedIntDialog("1. Partida \n2. Demo?\n", 1, 2).read();
+		startController.start(modeGame);
 	}
 }

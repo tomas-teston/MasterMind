@@ -4,13 +4,13 @@ import es.upm.miw.mastermind.controllers.OperationController;
 import es.upm.miw.mastermind.controllers.local.LocalLogic;
 import es.upm.miw.mastermind.views.console.ConsoleView;
 
-public class TicTacToe {
+public class MasterMind {
 
 	private Logic logic;
 
 	private View view;
 
-	public TicTacToe(View view, Logic logic) {
+	public MasterMind(View view, Logic logic) {
 		this.view = view;
 		this.logic = logic;
 	}
@@ -26,6 +26,6 @@ public class TicTacToe {
 	}
 
 	public static void main(String[] args) {
-		new TicTacToe(new ConsoleView(), new LocalLogic()).play();
+		new MasterMind(new ConsoleView(), new LocalLogic()).play();
 	}
 }

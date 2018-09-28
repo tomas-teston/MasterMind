@@ -7,16 +7,19 @@ public class LocalLogic implements Logic {
 
 	private Game game;
 
-	private LocalColocateControllerBuilder colocateControllerBuilder;
-
 	private LocalStartController startController;
+
+    private LocalConfigurationSecretController configurationSecretController ;
 
 	private LocalContinueController continueController;
 
+	private LocalColocateControllerBuilder colocateControllerBuilder;
+
 	public LocalLogic() {
 		game = new Game();
+		startController = new LocalStartController(game);
 		colocateControllerBuilder = new LocalColocateControllerBuilder(game);
-		startController = new LocalStartController(game, colocateControllerBuilder);
+		configurationSecretController = new LocalConfigurationSecretController(game, colocateControllerBuilder);
 		continueController = new LocalContinueController(game);
 	}
 
@@ -24,6 +27,8 @@ public class LocalLogic implements Logic {
 		switch (game.getState()){
 		case INITIAL:
 			return startController;
+        case CONFIG_SECRET:
+            return configurationSecretController;
 		case IN_GAME:
 			return colocateControllerBuilder.getColocateController();
 		case FINAL:

@@ -1,92 +1,68 @@
 package es.upm.miw.mastermind.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import es.upm.miw.mastermind.utils.Direction;
-
 class Board {
 
-	private Map<Color, Set<Coordinate>> coordinates;
+	private Combination secretCombination;
 
-	Board(int numPlayers) {
-		assert numPlayers > 0;
-		coordinates = new HashMap<>();
-		for (int i = 0; i < numPlayers; i++) {
-			coordinates.put(Color.values()[i], new HashSet<>());
-		}
+	private int limitRows;
+
+	private int injured;
+
+	private int killed;
+
+	Board(int limitRows, Combination secretCombination) {
+		assert limitRows > 0;
+		assert secretCombination != null;
+		this.limitRows = limitRows;
+		this.secretCombination = secretCombination;
+		this.injured = 0;
+		this.killed = 0;
 	}
 
-	Color getColor(Coordinate coordinate) {
-		assert coordinate != null;
-		for (Color color : coordinates.keySet()) {
-			if (coordinates.get(color).contains(coordinate)) {
-				return color;
+	public void setSecretCombination(Combination secretCombination) {
+		this.secretCombination = secretCombination;
+	}
+
+	public Combination getSecretCombination() {
+		return this.secretCombination;
+	}
+
+	public void calculateKilledAndInjured(Combination combinationPlay) {
+
+		this.killed = 0;
+		this.injured = 0;
+
+		List<Color> colorAlreadyChecked = new ArrayList<Color>();
+		for (int i = 0; i < Combination.DIMENSION; i++) {
+			Color color = combinationPlay.getColorAtPosition(i);
+
+			if (this.secretCombination.equalsColorAtPosition(color, i)) {
+				this.killed++;
+			} else {
+				if (secretCombination.containsColor(color) && !colorAlreadyChecked.contains(color)) {
+					this.injured++;
+				}
+				colorAlreadyChecked.add(color);
 			}
 		}
-		return Color.NONE;
 	}
 
-	boolean complete() {
-		int contTokens = 0;
-		for (Color color : coordinates.keySet()) {
-			contTokens += coordinates.get(color).size();
-		}
-		return contTokens == Coordinate.DIMENSION
-				* coordinates.keySet().size();
+	public int getKilled() {
+		return this.killed;
 	}
 
-	boolean existTicTacToe(Color color) {
-		assert color != Color.NONE;
-		Set<Coordinate> coordinateSet = coordinates.get(color);
-		if (coordinateSet.size() != Coordinate.DIMENSION) {
-			return false;
-		}
-		Coordinate[] coordinateArray = coordinateSet
-				.toArray(new Coordinate[0]);
-		Direction direction = coordinateArray[0].direction(coordinateArray[1]);
-		if (direction == Direction.NON_EXISTENT) {
-			return false;
-		}
-		for (int i = 1; i < Coordinate.DIMENSION - 1; i++) {
-			if (coordinateArray[i].direction(coordinateArray[i + 1]) != direction) {
-				return false;
-			}
-		}
-		return true;
+	public int getInjured() {
+		return this.injured;
 	}
 
-	boolean empty(Coordinate coordinate) {
-		assert coordinate != null;
-		return !this.full(coordinate, Color.XS)
-				&& !this.full(coordinate, Color.OS);
-	}
-
-	void put(Coordinate coordinate, Color color) {
-		assert coordinate != null;
-		assert color != Color.NONE;
-		assert color != null;
-		coordinates.get(color).add(coordinate.clone());
-	}
-
-	void remove(Coordinate coordinate, Color color) {
-		assert coordinate != null;
-		assert color != Color.NONE;
-		coordinates.get(color).remove(coordinate);
-	}
-
-	boolean full(Coordinate coordinate, Color color) {
-		assert coordinate != null;
-		assert color != Color.NONE;
-		return coordinates.get(color).contains(coordinate);
-	}
-
-	void clear() {
-		for (Color color : coordinates.keySet()) {
-			coordinates.get(color).clear();
-		}
+	public boolean existMasterMind() {
+		return killed == Combination.DIMENSION;
 	}
 
 }

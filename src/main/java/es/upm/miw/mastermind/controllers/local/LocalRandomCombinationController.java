@@ -1,18 +1,18 @@
 package es.upm.miw.mastermind.controllers.local;
 
-import es.upm.miw.mastermind.controllers.CoordinateControllerVisitor;
-import es.upm.miw.mastermind.controllers.RandomCoordinateController;
-import es.upm.miw.mastermind.models.Coordinate;
+import es.upm.miw.mastermind.controllers.CombinationControllerVisitor;
+import es.upm.miw.mastermind.controllers.RandomCombinationController;
+import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
 
-public class LocalRandomCoordinateController extends LocalCoordinateController
-	implements RandomCoordinateController{
+public class LocalRandomCombinationController extends LocalCombinationController
+	implements RandomCombinationController {
 
-	protected LocalRandomCoordinateController(Game game) {
+	protected LocalRandomCombinationController(Game game) {
 		super(game);
 	}
 
-	@Override
+	/*@Override
 	public Coordinate getOrigin() {
 		Coordinate origin = new Coordinate();
 		boolean ok;
@@ -47,11 +47,19 @@ public class LocalRandomCoordinateController extends LocalCoordinateController
 			ok = !origin.equals(target);
 		} while(!ok);
 		return target;
+	}*/
+
+	@Override public Combination getCombination() {
+		return null;
+	}
+
+	@Override public Combination getTarget(Combination origin) {
+		return null;
 	}
 
 	@Override
-	public void accept(CoordinateControllerVisitor coordinateControllerVisitor) {
-		coordinateControllerVisitor.visit(this);
+	public void accept(CombinationControllerVisitor combinationControllerVisitor) {
+		combinationControllerVisitor.visit(this);
 	}
 
 }

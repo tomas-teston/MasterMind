@@ -1,19 +1,22 @@
 package es.upm.miw.mastermind.models;
+import es.upm.miw.mastermind.controllers.Error;
 
 public class Game {
 
 	private State state;
 
-	private Turn turn;
+	private Attempt attempt;
 
 	private Board board;
 
-	private static final int NUM_PLAYERS = 2;
+	private ModeGame modeGame;
+
+	public static final int NUM_ROWS_BOARD = 10;
 
 	public Game() {
 		state = State.INITIAL;
-		turn = new Turn();
-		board = new Board(Game.NUM_PLAYERS);
+		attempt = new Attempt();
+		board = new Board(Game.NUM_ROWS_BOARD, null);
 	}
 
 	public State getState() {
@@ -24,48 +27,55 @@ public class Game {
 		this.state = state;
 	}
 
-	public Color take() {
-		return turn.take();
+	public void setSecret(Combination secret) {
+		this.board.setSecretCombination(secret);
 	}
 
-	public void change() {
-		turn.change();
+	public Combination getSecret() {
+		return this.board.getSecretCombination();
 	}
 
-	public boolean full(Coordinate origin) {
-		return board.full(origin, turn.take());
+	public void setModeGame(ModeGame modeGame) {
+		this.modeGame = modeGame;
 	}
 
-	public boolean empty(Coordinate target) {
-		return board.empty(target);
+	public ModeGame getModeGame() {
+		return this.modeGame;
 	}
 
-	public int getNumPlayers() {
-		return NUM_PLAYERS;
+	public int getNumMaxPlays() {
+		return NUM_ROWS_BOARD;
 	}
 
-	public void put(Coordinate target) {
-		board.put(target, turn.take());
+	public int take() {
+		return attempt.take();
 	}
 
-	public void remove(Coordinate origin) {
-		board.remove(origin, turn.take());
+	public void upAttemp() {
+		attempt.up();
 	}
 
-	public void clear() {
-		board.clear();
+	public int killed() {
+		return board.getKilled();
 	}
 
-	public boolean complete() {
-		return board.complete();
+	public int injured() {
+		return board.getInjured();
 	}
 
-	public boolean existTicTacToe() {
-		return board.existTicTacToe(turn.take());
+	public Error isCorrectCombination(Combination combinationCheck) {
+		if (Combination.DIMENSION != combinationCheck.getListColorDimension()) {
+			return Error.COMBINATION_ERROR;
+		}
+		return null;
 	}
 
-	public Color getColor(Coordinate coordinate) {
-		return board.getColor(coordinate);
-	}
+	public void calculateKilledAndInjured(Combination combinationPlay) { this.board.calculateKilledAndInjured(combinationPlay); }
+
+	public boolean existMastermind() { return this.board.existMasterMind(); }
+
+	public boolean spentAttempts() { return this.attempt.spentAttempts(NUM_ROWS_BOARD); }
+
+	public void clear() { this.attempt.clear(); }
 
 }
