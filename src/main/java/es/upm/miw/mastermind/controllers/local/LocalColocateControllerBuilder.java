@@ -25,7 +25,7 @@ class LocalColocateControllerBuilder {
 			}
 		}
 		for (int i = 0; i < numMaxPlays; i++) {
-				this.colocateControllerArray[i] = new LocalPlayController(game, combinationController[i]);
+				this.colocateControllerArray[i] = new LocalPutController(game, combinationController[i]);
 		}
 	}
 
