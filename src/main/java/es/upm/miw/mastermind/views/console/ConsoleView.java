@@ -4,7 +4,7 @@ import es.upm.miw.mastermind.View;
 import es.upm.miw.mastermind.controllers.ConfigurationSecretController;
 import es.upm.miw.mastermind.controllers.ContinueController;
 import es.upm.miw.mastermind.controllers.OperationController;
-import es.upm.miw.mastermind.controllers.PlayController;
+import es.upm.miw.mastermind.controllers.PutController;
 import es.upm.miw.mastermind.controllers.StartController;
 
 public class ConsoleView implements View {
@@ -38,8 +38,8 @@ public class ConsoleView implements View {
 		configurationSecretView.interact(configurationSecretController);
 	}
 
-	@Override public void visit(PlayController playController) {
-		gameView.interact(playController);
+	@Override public void visit(PutController putController) {
+		gameView.interact(putController);
 	}
 
 	@Override

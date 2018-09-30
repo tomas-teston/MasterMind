@@ -3,7 +3,7 @@ package es.upm.miw.mastermind.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.upm.miw.mastermind.utils.ClosedIntervalInteger;
+import es.upm.miw.mastermind.utils.ClosedInterval;
 
 public class Combination {
 
@@ -11,7 +11,7 @@ public class Combination {
 
 	public static final int DIMENSION = 4;
 
-	private static final ClosedIntervalInteger LIMITS = new ClosedIntervalInteger(0, Combination.DIMENSION-1);
+	private static final ClosedInterval LIMITS = new ClosedInterval(0, Combination.DIMENSION-1);
 
 	public Combination(){
 		colors = new ArrayList<Color>();
@@ -46,22 +46,18 @@ public class Combination {
 		return colors.contains(color);
 	}
 
-	public int getListColorDimension() {
+	public int combinationDimension() {
 		return this.getColors().size();
 	}
 
-	public boolean equals(Combination combination) {
-		for (int i = 0; i < combination.DIMENSION; i++) {
-			if (!this.equalsColorAtPosition(combination.getColorAtPosition(i), i))
-				return false;
+	public Combination random() {
+		for (int index = 0; index < DIMENSION; index++) {
+			this.colors.add(Color.getRandom());
 		}
-		return true;
+		return this;
 	}
 
-	public void random() {
-		/*Random random = new Random(System.currentTimeMillis());
-		coordinate.setRow(random.nextInt(Combination.DIMENSION));
-		coordinate.setColumn(random.nextInt(Combination.DIMENSION));*/
+	@Override public String toString() {
+		return colors.toString();
 	}
-
 }

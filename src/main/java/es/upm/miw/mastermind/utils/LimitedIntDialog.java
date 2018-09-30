@@ -4,19 +4,15 @@ public class LimitedIntDialog {
 
 	private String title;
 
-	private ClosedIntervalInteger limits;
+	private ClosedInterval limits;
 
-	private ClosedIntervalIntegerView limitsView;
+	private ClosedIntervalView limitsView;
 
 	public LimitedIntDialog(String title, int min, int max){
 		assert title != null;
-		this.limits = new ClosedIntervalInteger(min, max);
-		limitsView = new ClosedIntervalIntegerView("El valor debe estar entre ", limits);
+		this.limits = new ClosedInterval(min, max);
+		limitsView = new ClosedIntervalView("El valor debe estar entre ", limits);
 		this.title = title + " " + limitsView + ": ";
-	}
-
-	public LimitedIntDialog(String title, int max){
-		this(title, 1, max);
 	}
 
 	public int read(){

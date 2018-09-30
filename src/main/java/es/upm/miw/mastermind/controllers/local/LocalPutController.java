@@ -3,14 +3,14 @@ package es.upm.miw.mastermind.controllers.local;
 import es.upm.miw.mastermind.controllers.ColocateControllerVisitor;
 import es.upm.miw.mastermind.controllers.Error;
 import es.upm.miw.mastermind.controllers.OperationControllerVisitor;
-import es.upm.miw.mastermind.controllers.PlayController;
+import es.upm.miw.mastermind.controllers.PutController;
 import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
 
-public class LocalPlayController extends LocalColocateController implements
-		PlayController {
+public class LocalPutController extends LocalColocateController implements
+		PutController {
 
-	LocalPlayController(Game game, LocalCombinationController combinationController) {
+	LocalPutController(Game game, LocalCombinationController combinationController) {
 		super(game, combinationController);
 	}
 

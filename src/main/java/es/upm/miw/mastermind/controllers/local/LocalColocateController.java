@@ -1,6 +1,7 @@
 package es.upm.miw.mastermind.controllers.local;
 
 import es.upm.miw.mastermind.controllers.ColocateController;
+import es.upm.miw.mastermind.controllers.CombinationController;
 import es.upm.miw.mastermind.models.Game;
 
 abstract class LocalColocateController extends LocalOperationController
@@ -12,6 +13,10 @@ abstract class LocalColocateController extends LocalOperationController
 		super(game);
 		assert combinationController != null;
 		this.combinationController = combinationController;
+	}
+
+	public CombinationController getCombinationController() {
+		return combinationController;
 	}
 
 }

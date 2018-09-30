@@ -4,7 +4,6 @@ import java.util.List;
 
 import es.upm.miw.mastermind.controllers.ConfigurationSecretController;
 import es.upm.miw.mastermind.controllers.OperationControllerVisitor;
-import es.upm.miw.mastermind.models.Color;
 import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
 import es.upm.miw.mastermind.models.State;
@@ -21,11 +20,10 @@ public class LocalConfigurationSecretController extends LocalOperationController
 		this.colocateControllerBuilder = colocateControllerBuilder;
 	}
 
-	@Override public void configurationSecret (String secret) {
+	@Override public void configurationSecret (Combination secret) {
 		assert secret != null;
 		assert this.getState() == State.CONFIG_SECRET;
-		List<Color> combinationSecret = Color.getListCodesByStringCode(secret);
-		this.setSecretCombination(new Combination(combinationSecret));
+		this.setSecretCombination(secret);
 	}
 
 	@Override public Error isCorrectCombinationSecret() {

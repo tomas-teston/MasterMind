@@ -2,8 +2,7 @@ package es.upm.miw.mastermind.views.console;
 
 import es.upm.miw.mastermind.controllers.ColocateControllerVisitor;
 import es.upm.miw.mastermind.controllers.ColocateController;
-import es.upm.miw.mastermind.controllers.PlayController;
-import es.upm.miw.mastermind.models.Color;
+import es.upm.miw.mastermind.controllers.PutController;
 import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
 import es.upm.miw.mastermind.utils.IO;
@@ -20,16 +19,23 @@ class GameView implements ColocateControllerVisitor {
 	}
 
 	@Override
-	public void visit(PlayController playController) {
-		CombinationView combinationView = new CombinationView("Intento " + (playController.takeAttemp() + 1), new Combination());
-		combinationView.read();
-		Error error = playController.validateCombination(combinationView.getCombination());
-		if (error != null) {
-			io.writeln("" + error);
-		} else {
-			playController.putCombination(combinationView.getCombination());
-			this.showGame(playController);
-		}
+	public void visit(PutController putController) {
+		PutCombinationView putCombinationView = new PutCombinationView(putController.getCombinationController());
+		this.put(putController, putCombinationView);
+		this.showGame(putController);
+	}
+
+	private void put(PutController putController, ColocateCombinationView colocateCombinationView) {
+		Combination combination;
+		Error error = null;
+		do {
+			combination = colocateCombinationView.getCombination();
+			error = putController.validateCombination(combination);
+			if (error != null) {
+				io.writeln("" + error);
+			}
+		} while (error != null);
+		putController.putCombination(combination);
 	}
 
 	private void showGame(ColocateController colocateController) {
