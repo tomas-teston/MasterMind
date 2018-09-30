@@ -4,7 +4,6 @@ import java.util.List;
 
 import es.upm.miw.mastermind.controllers.ConfigurationSecretController;
 import es.upm.miw.mastermind.controllers.OperationControllerVisitor;
-import es.upm.miw.mastermind.models.Color;
 import es.upm.miw.mastermind.models.Combination;
 import es.upm.miw.mastermind.models.Game;
 import es.upm.miw.mastermind.models.State;

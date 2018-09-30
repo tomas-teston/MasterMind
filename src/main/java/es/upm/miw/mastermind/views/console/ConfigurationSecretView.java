@@ -12,7 +12,6 @@ class ConfigurationSecretView {
 	private IO io = new IO();
 
 	void interact(ConfigurationSecretController configurationSecretController){
-		//String secret = new LimitedStringDialog("Introduce secreto: [4 letras: A (amarillo), R (rojo), V (verde), Z (azul)] ", 1, 4).read();
 		configurationSecretController.configurationSecret(new Combination().random());
 		Error error = configurationSecretController.isCorrectCombinationSecret();
 		if (error == null) {

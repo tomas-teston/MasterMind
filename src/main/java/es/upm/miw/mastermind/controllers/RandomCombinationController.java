@@ -4,6 +4,6 @@ import es.upm.miw.mastermind.models.Combination;
 
 public interface RandomCombinationController extends CombinationController {
 
-	Combination getTarget(Combination origin);
+	Combination getCombination();
 
 }

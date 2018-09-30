@@ -64,7 +64,7 @@ public class Game {
 	}
 
 	public Error isCorrectCombination(Combination combinationCheck) {
-		if (Combination.DIMENSION != combinationCheck.getListColorDimension()) {
+		if (Combination.DIMENSION != combinationCheck.combinationDimension()) {
 			return Error.COMBINATION_ERROR;
 		}
 		return null;

@@ -3,7 +3,7 @@ package es.upm.miw.mastermind.models;
 import java.util.ArrayList;
 import java.util.List;
 
-import es.upm.miw.mastermind.utils.ClosedIntervalInteger;
+import es.upm.miw.mastermind.utils.ClosedInterval;
 
 public class Combination {
 
@@ -11,7 +11,7 @@ public class Combination {
 
 	public static final int DIMENSION = 4;
 
-	private static final ClosedIntervalInteger LIMITS = new ClosedIntervalInteger(0, Combination.DIMENSION-1);
+	private static final ClosedInterval LIMITS = new ClosedInterval(0, Combination.DIMENSION-1);
 
 	public Combination(){
 		colors = new ArrayList<Color>();
@@ -46,7 +46,7 @@ public class Combination {
 		return colors.contains(color);
 	}
 
-	public int getListColorDimension() {
+	public int combinationDimension() {
 		return this.getColors().size();
 	}
 
