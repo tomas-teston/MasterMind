@@ -26,8 +26,13 @@ class CombinationView {
 	}
 
 	void read() {
-		io.writeln(title + " [Introduce 4 letras: A (amarillo), R (rojo), V (verde), Z (azul)]");
+		io.writeln(title + "[Introduce 4 letras: A (amarillo), R (rojo), V (verde), Z (azul)]");
 		combination.setColors(Color.getListCodesByStringCode(new LimitedStringDialog("Letras: ", 1, 4).read().toUpperCase()));
+	}
+
+	void write() {
+		io.writeln(title + combination.toString());
+
 	}
 
 }

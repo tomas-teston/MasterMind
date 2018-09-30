@@ -5,3 +5,4 @@
 *.ipr
 
 target
+/es/upm/miw/mastermind/views/console/PutCombinationView.java

@@ -21,15 +21,22 @@ class GameView implements ColocateControllerVisitor {
 
 	@Override
 	public void visit(PlayController playController) {
-		CombinationView combinationView = new CombinationView("Intento " + (playController.takeAttemp() + 1), new Combination());
-		combinationView.read();
-		Error error = playController.validateCombination(combinationView.getCombination());
-		if (error != null) {
-			io.writeln("" + error);
-		} else {
-			playController.putCombination(combinationView.getCombination());
-			this.showGame(playController);
-		}
+		PutCombinationView putCombinationView = new PutCombinationView(playController.getCombinationController());
+		this.put(playController, putCombinationView);
+		this.showGame(playController);
+	}
+
+	private void put(PlayController playController, ColocateCombinationView colocateCombinationView) {
+		Combination combination;
+		Error error = null;
+		do {
+			combination = colocateCombinationView.getCombination();
+			error = playController.validateCombination(combination);
+			if (error != null) {
+				io.writeln("" + error);
+			}
+		} while (error != null);
+		playController.putCombination(combination);
 	}
 
 	private void showGame(ColocateController colocateController) {

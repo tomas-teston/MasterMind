@@ -50,18 +50,14 @@ public class Combination {
 		return this.getColors().size();
 	}
 
-	public boolean equals(Combination combination) {
-		for (int i = 0; i < combination.DIMENSION; i++) {
-			if (!this.equalsColorAtPosition(combination.getColorAtPosition(i), i))
-				return false;
+	public Combination random() {
+		for (int index = 0; index < DIMENSION; index++) {
+			this.colors.add(Color.getRandom());
 		}
-		return true;
+		return this;
 	}
 
-	public void random() {
-		/*Random random = new Random(System.currentTimeMillis());
-		coordinate.setRow(random.nextInt(Combination.DIMENSION));
-		coordinate.setColumn(random.nextInt(Combination.DIMENSION));*/
+	@Override public String toString() {
+		return colors.toString();
 	}
-
 }

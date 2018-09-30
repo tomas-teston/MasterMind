@@ -8,6 +8,8 @@ public interface ColocateController extends OperationController, PresenterContro
 
 	void accept(ColocateControllerVisitor colocateControllerVisitor);
 
+	CombinationController getCombinationController();
+
 	boolean existMasterMind();
 
 	boolean spentAttempts();

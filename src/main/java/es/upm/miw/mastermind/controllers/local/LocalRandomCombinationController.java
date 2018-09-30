@@ -50,7 +50,7 @@ public class LocalRandomCombinationController extends LocalCombinationController
 	}*/
 
 	@Override public Combination getCombination() {
-		return null;
+		return new Combination().random();
 	}
 
 	@Override public Combination getTarget(Combination origin) {
